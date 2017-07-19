@@ -1,0 +1,35 @@
+#+TITLE: D-Bot
+#+AUTHOR: Roman Zayrullin
+#+EMAIL: krosenmann@gmail.com
+#+STARTUP: showall
+#+TAGS: DBOT(b) 
+
+* Agenda
+** TODO при запуске стрима на твиче\ютубе кидает уведомление на определенный текстовый канал :DBOT:
+   name live on *
+   game | title
+
+   команда: !twitch name; !youtube name
+
+** TODO на определенном канале запускать викторину с вопросами из текстового файла :DBOT:
+
+   команда: !victory и !stop
+
+** TODO рандомная шутка из башорга или ithappens                       :DBOT:
+
+   команда: !bash; !it
+
+** TODO рандомная картинка                                             :DBOT:
+
+   команды стоит создать по названиям сайтов или по тематикам 
+   САЙТЫ: 9gag, рандом гугль пикча хз (откуда вообще лучше и легче будет выдергивать?)
+
+** TODO Приветствовалки и оповещалки о новых петучах на серваке тоже норм. Именно оповещалка. :DBOT:
+   Уведомление о смене роли, например, тоже подойдёт.
+
+* Process
+
+** TODO Authentification
+   #+BEGIN_SRC python :tangle yes
+
+   #+END_SRC
