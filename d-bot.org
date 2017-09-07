@@ -4,7 +4,66 @@
 #+STARTUP: showall
 #+TAGS: DBOT(b) 
 
-* Agenda
+* TODO D-Bot
+#+BEGIN_SRC python :tangle no
+  from setup import AUTH_TOKEN
+  import discord
+  import asyncio
+
+  client = discord.Client()
+
+  @client.event
+  async def on_ready():
+      print('Logged in as')
+      print(client.user.name)
+      print(client.user.id)
+      print('------')
+
+  @client.event
+  async def on_message(message):
+      if message.content.startswith('!test'):
+	  counter = 0
+	  tmp = await client.send_message(message.channel, 'Calculating messages...')
+	  async for log in client.logs_from(message.channel, limit=100):
+	      if log.author == message.author:
+		  counter += 1
+
+		  await client.edit_message(tmp, 'You have {} messages.'.format(counter))
+	      elif message.content.startswith('!sleep'):
+	  await asyncio.sleep(5)
+	  await client.send_message(message.channel, 'Done sleeping')
+
+  client.run(AUTH_TOKEN)
+#+END_SRC
+
+#+BEGIN_SRC python :tangle test.py
+  import discord
+  import asyncio
+  from setup import AUTH_TOKEN
+  client = discord.Client()
+
+  @client.event
+  async def on_ready():
+      print('Logged in as')
+      print(client.user.name)
+      print(client.user.id)
+      print('---------')
+
+  @client.event
+  async def on_message(message):
+      if message.content.startswith('!test'):
+	  # counter = 0
+	  tmp = await client.send_message(message.channel, 'Calculating messages...')
+	  async for log in client.log_from(message.channel, limit=100):
+	      if log.author == message.author:
+		  counter += 1
+	  await client.edit_message(tmp, 'You have {} messages.'.format(counter))
+      elif message.content.startswitch('!sleep'):
+	  await asyncio.sleep(5)
+	  await client.send_message(message.channel, 'Done sleeping')
+
+  client.run(AUTH_TOKEN)
+#+END_SRC
 ** TODO при запуске стрима на твиче\ютубе кидает уведомление на определенный текстовый канал :DBOT:
    name live on *
    game | title
@@ -15,11 +74,57 @@
 
    команда: !victory и !stop
 
-** TODO рандомная шутка из башорга или ithappens                       :DBOT:
+** DONE рандомная шутка из башорга или ithappens                       :DBOT:
+   CLOSED: [2017-07-24 Пн 11:55]
+   :LOGBOOK:
+   CLOCK: [2017-07-20 Чт 23:12]--[2017-07-21 Пт 12:53] => 13:41
+   :END:
 
    команда: !bash; !it
+   #+BEGIN_SRC python :tangle bash.py :return shuteika.content
+     import discord
+     import asyncio
+     import requests
+     import re
+     from setup import AUTH_TOKEN
 
-** TODO рандомная картинка                                             :DBOT:
+     client = discord.Client()
+     EBASHIM = 'http://bash.im/forweb/?u'
+     DELIM = "<' + '/span><' + 'br>", "<' + 'br><' + 'small>"
+
+     @client.event
+     async def on_ready():
+         print('Logged in as')
+         print(client.user.name)
+         print(client.user.id)
+         print('---------')
+
+     @client.event
+     async def on_message(message):
+         if message.content.startswith('!bash'):
+             await client.send_typing(message.channel)
+             await asyncio.sleep(3)
+             shuteika = requests.request('GET', EBASHIM)
+             shuteika = shuteika.content.decode('utf-8')
+             shuteika = shuteika.replace("<' + 'br>", "\n")
+             shuteika = shuteika.replace("<' + 'br />", "\n")
+             shuteika = shuteika.replace("&quot;", "''")
+             shuteika = shuteika.replace("&lt;", "'")
+             shuteika = shuteika.replace("&gt;", "'")
+             shuteika = re.sub(r'var[\w\W]*;\"\>', '', shuteika)
+             shuteika = shuteika[:shuteika.index('<\' + \'/div>')]
+             await client.send_message(message.channel, shuteika)
+            
+     client.run(AUTH_TOKEN)
+   #+END_SRC
+
+   #+RESULTS:
+   : var borq='';
+   : borq += '<' + 'div id="b_q"><' + 'a href="http://bash.im/quote/419317">#419317<' + '/a> <' + 'span id="b_q_h">[ 5034 ]<' + '/span><' + 'div id="b_q_t" style="padding: 1em 0;">tessa: а можно поинтересоваться, что там было?) место закончилось?)<' + 'br>solmer: он сказал - я сервер и нехочу ничего решать<' + 'br>solmer: я хочу пиу пиу.<' + '/div><' + 'small><' + 'a href="http://bash.im/" target="_blank" title="bash.im откроется в новом окне">Больше на bash.im!<' + '/a><' + '/small><' + '/div>';
+   : document.write(borq);
+
+** URGENTLY!!! рандомная картинка                                      :DBOT:
+   DEADLINE: <2017-08-06 Вс> SCHEDULED: <2017-08-03 Чт>
 
    команды стоит создать по названиям сайтов или по тематикам 
    САЙТЫ: 9gag, рандом гугль пикча хз (откуда вообще лучше и легче будет выдергивать?)
@@ -28,8 +133,3 @@
    Уведомление о смене роли, например, тоже подойдёт.
 
 * Process
-
-** TODO Authentification
-   #+BEGIN_SRC python :tangle yes
-
-   #+END_SRC
