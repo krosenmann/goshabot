@@ -1,19 +1,42 @@
-#+TITLE: Асинхронное программирование на примере бота для Discord
+#+TITLE: Попытки асинхронного программирования на примере бота для Discord
 #+AUTHOR: Roman Zayrullin
 #+EMAIL: krosenmann@gmail.com
 #+STARTUP: showall
 #+TAGS: DBOT(b) 
 
 *   
+  Ненавижу дебажить асинхронщину, потому что ее очень тяжко
+  дебажить. А вообще из этого вышел бы неплохой рассказ.
   #+name main-import
   #+begin_src python 
-  from setup import AUTH_TOKEN
-  import discord
-  import asyncio
+    import os
+    import discord
+    import asyncio
+    import requests
+    import re
 
-  client = discord.Client()
+    client = discord.Client()
 
   #+end_src
+  
+  Для использования нужно добавить переменную окружения
+  DISCORD_AUTH_TOKEN: 
+  ~$ export DISCORD_AUTH_TOKEN=<token>~
+  #+name run_client
+  #+BEGIN_SRC python
+    client.run(os.environ.get(DISCORD_AUTH_TOKEN))
+  #+END_SRC
+
+
+  #+name comand-pattern
+  #+BEGIN_SRC python :noweb yes tangle yes
+    <<main-import>>
+    class Command:
+
+        async def run(self, name):
+            raise "Должна быть переопределена"
+    
+  #+END_SRC
 ** TODO при запуске стрима на твиче\ютубе кидает уведомление на определенный текстовый канал :DBOT:
    name live on *
    game | title
@@ -33,25 +56,15 @@
    команда: !bash; !it
    #+NAME bot-itself
    #+BEGIN_SRC python :tangle bash.py :return shuteika.content :noweb yes
-     <<main-import>>
-     import requests
-     import re
-     from setup import AUTH_TOKEN
+     <<command-pattern>>
 
-     client = discord.Client()
-     EBASHIM = 'http://bash.im/forweb/?u'
-     DELIM = "<' + '/span><' + 'br>", "<' + 'br><' + 'small>"
+     class Bash(Command):
 
-     @client.event
-     async def on_ready():
-         print('Logged in as')
-         print(client.user.name)
-         print(client.user.id)
-         print('---------')
+         EBASHIM = 'http://bash.im/forweb/?u'
+         DELIM = "<' + '/span><' + 'br>", "<' + 'br><' + 'small>"
 
-     @client.event
-     async def on_message(message):
-         if message.content.startswith('!bash'):
+         @client.event
+         async def run():
              await client.send_typing(message.channel)
              await asyncio.sleep(3)
              shuteika = requests.request('GET', EBASHIM)
@@ -64,8 +77,6 @@
              shuteika = re.sub(r'var[\w\W]*;\"\>', '', shuteika)
              shuteika = shuteika[:shuteika.index('<\' + \'/div>')]
              await client.send_message(message.channel, shuteika)
-
-     client.run(AUTH_TOKEN)
    #+END_SRC
 
    #+RESULTS:
