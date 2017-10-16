@@ -1,69 +1,19 @@
-#+TITLE: D-Bot
+#+TITLE: Асинхронное программирование на примере бота для Discord
 #+AUTHOR: Roman Zayrullin
 #+EMAIL: krosenmann@gmail.com
 #+STARTUP: showall
 #+TAGS: DBOT(b) 
 
-* TODO D-Bot
-#+BEGIN_SRC python :tangle no
+*   
+  #+name main-import
+  #+begin_src python 
   from setup import AUTH_TOKEN
   import discord
   import asyncio
 
   client = discord.Client()
 
-  @client.event
-  async def on_ready():
-      print('Logged in as')
-      print(client.user.name)
-      print(client.user.id)
-      print('------')
-
-  @client.event
-  async def on_message(message):
-      if message.content.startswith('!test'):
-	  counter = 0
-	  tmp = await client.send_message(message.channel, 'Calculating messages...')
-	  async for log in client.logs_from(message.channel, limit=100):
-	      if log.author == message.author:
-		  counter += 1
-
-		  await client.edit_message(tmp, 'You have {} messages.'.format(counter))
-	      elif message.content.startswith('!sleep'):
-	  await asyncio.sleep(5)
-	  await client.send_message(message.channel, 'Done sleeping')
-
-  client.run(AUTH_TOKEN)
-#+END_SRC
-
-#+BEGIN_SRC python :tangle test.py
-  import discord
-  import asyncio
-  from setup import AUTH_TOKEN
-  client = discord.Client()
-
-  @client.event
-  async def on_ready():
-      print('Logged in as')
-      print(client.user.name)
-      print(client.user.id)
-      print('---------')
-
-  @client.event
-  async def on_message(message):
-      if message.content.startswith('!test'):
-	  # counter = 0
-	  tmp = await client.send_message(message.channel, 'Calculating messages...')
-	  async for log in client.log_from(message.channel, limit=100):
-	      if log.author == message.author:
-		  counter += 1
-	  await client.edit_message(tmp, 'You have {} messages.'.format(counter))
-      elif message.content.startswitch('!sleep'):
-	  await asyncio.sleep(5)
-	  await client.send_message(message.channel, 'Done sleeping')
-
-  client.run(AUTH_TOKEN)
-#+END_SRC
+  #+end_src
 ** TODO при запуске стрима на твиче\ютубе кидает уведомление на определенный текстовый канал :DBOT:
    name live on *
    game | title
@@ -81,9 +31,9 @@
    :END:
 
    команда: !bash; !it
-   #+BEGIN_SRC python :tangle bash.py :return shuteika.content
-     import discord
-     import asyncio
+   #+NAME bot-itself
+   #+BEGIN_SRC python :tangle bash.py :return shuteika.content :noweb yes
+     <<main-import>>
      import requests
      import re
      from setup import AUTH_TOKEN
@@ -114,7 +64,7 @@
              shuteika = re.sub(r'var[\w\W]*;\"\>', '', shuteika)
              shuteika = shuteika[:shuteika.index('<\' + \'/div>')]
              await client.send_message(message.channel, shuteika)
-            
+
      client.run(AUTH_TOKEN)
    #+END_SRC
 
