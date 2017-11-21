@@ -13,7 +13,7 @@
   еще можно редактировать отдельно. Т.е подобавлять новые команды,
   новые данные в адвенчуры и викторины и т.д.
   #+NAME gspread-test
-  #+BEGIN_SRC python :tangle yes :var table_name='Discord Test' :results output
+  #+BEGIN_SRC python :tangle yes :var table_name="Discord Test" :results output
     import gspread
     from oauth2client.service_account import ServiceAccountCredentials
     from pprint import pprint
@@ -28,7 +28,7 @@
     row_test = sheet.row_values(1)
     cell_test = sheet.cell(1, 2).value
 
-    pprint([sheet, col_test, row_test, cell_test]\)
+    pprint([sheet, col_test, row_test, cell_test])
   #+END_SRC
 
   #+RESULTS:
@@ -1090,7 +1090,6 @@
 
   #+NAME comand-pattern
   #+BEGIN_SRC python :noweb yes tangle yes
-    <<main-import>>
     class Command:
 
         async def run(self, name):
@@ -1129,19 +1128,17 @@
    Сделать красиво, бля.
    команда: !bash; !it
    #+NAME bot-itself
-   #+BEGIN_SRC python :tangle bash.py :return shuteika.content :noweb yes
-     <<command-pattern>>
+   #+BEGIN_SRC python :tangle bash.py :return Bash().send_joke() :noweb yes
+     import requests
+     import re
 
-     class Bash(Command):
 
+     class Bash:
          EBASHIM = 'http://bash.im/forweb/?u'
          DELIM = "<' + '/span><' + 'br>", "<' + 'br><' + 'small>"
 
-         @client.event
-         async def run():
-             await client.send_typing(message.channel)
-             await asyncio.sleep(3)
-             shuteika = requests.request('GET', EBASHIM)
+         def send_joke(self):
+             shuteika = requests.request('GET', self.EBASHIM)
              shuteika = shuteika.content.decode('utf-8')
              shuteika = shuteika.replace("<' + 'br>", "\n")
              shuteika = shuteika.replace("<' + 'br />", "\n")
@@ -1150,13 +1147,14 @@
              shuteika = shuteika.replace("&gt;", "'")
              shuteika = re.sub(r'var[\w\W]*;\"\>', '', shuteika)
              shuteika = shuteika[:shuteika.index('<\' + \'/div>')]
-             await client.send_message(message.channel, shuteika)
+             return shuteika
    #+END_SRC
 
    #+RESULTS:
-   : var borq='';
-   : borq += '<' + 'div id="b_q"><' + 'a href="http://bash.im/quote/419317">#419317<' + '/a> <' + 'span id="b_q_h">[ 5034 ]<' + '/span><' + 'div id="b_q_t" style="padding: 1em 0;">tessa: а можно поинтересоваться, что там было?) место закончилось?)<' + 'br>solmer: он сказал - я сервер и нехочу ничего решать<' + 'br>solmer: я хочу пиу пиу.<' + '/div><' + 'small><' + 'a href="http://bash.im/" target="_blank" title="bash.im откроется в новом окне">Больше на bash.im!<' + '/a><' + '/small><' + '/div>';
-   : document.write(borq);
+   : by Arch.
+   : 
+   : Пишу ПО для киосков самообслуживания. Последние 20 рублей пришлось в приемник купюр сунуть для тестирования.
+   : Ебанутая профессия...
 
 ** URGENTLY!!! рандомная картинка                                      :DBOT:
    DEADLINE: <2017-08-06 Вс> SCHEDULED: <2017-08-03 Чт>
@@ -1166,5 +1164,6 @@
 
 ** TODO Приветствовалки и оповещалки о новых петучах на серваке тоже норм. Именно оповещалка. :DBOT:
    Уведомление о смене роли, например, тоже подойдёт.
+   Вот тут хорошо зайдет ттс!
 
 * Process
