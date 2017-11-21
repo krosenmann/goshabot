@@ -13,7 +13,7 @@
   еще можно редактировать отдельно. Т.е подобавлять новые команды,
   новые данные в адвенчуры и викторины и т.д.
   #+NAME gspread-test
-  #+BEGIN_SRC python :tangle yes :results output
+  #+BEGIN_SRC python :tangle yes :var table_name='Discord Test' :results output
     import gspread
     from oauth2client.service_account import ServiceAccountCredentials
     from pprint import pprint
@@ -1065,9 +1065,10 @@
 
 * 
   Ненавижу дебажить асинхронщину, потому что ее очень тяжко
-  дебажить. А вообще из этого вышел бы неплохой рассказ.
+  дебажить. Вывод -- а почему бы не писать асинхронщину
+  синхронно? :confused:
   #+NAME main-import
-  #+BEGIN_SRC python 
+  #+BEGIN_SRC python :var DISCORD_AUTH_TOKEN = <token>
     import os
     import discord
     import asyncio
@@ -1075,15 +1076,15 @@
     import re
 
     client = discord.Client()
-
+    client.run(DISCORD_AUTH_TOKEN)
   #+END_SRC
   
   Для использования нужно добавить переменную окружения
   DISCORD_AUTH_TOKEN: 
   ~$ export DISCORD_AUTH_TOKEN=<token>~
   #+NAME run_client
-  #+BEGIN_SRC python
-    client.run(os.environ.get(DISCORD_AUTH_TOKEN))
+  #+BEGIN_SRC python 
+    client.run(os.environ.get('DISCORD_AUTH_TOKEN'))
   #+END_SRC
 
 
@@ -1101,17 +1102,31 @@
    game | title
 
    команда: !twitch name; !youtube name
+   Для забора этой штуки нужно подключаться уже к апи твича, и
+   периодически его опрашивать. Или(!) можно чекать в самом
+   дискорде. Надо посмотреть, как обстоят дела в либе
+   дискорда. 
+   Варинты:
+   - Периодически чекать состояние стримов стримеров из списка
+   - Чекать по запросу. 
+   Оповещения с помощью /tts???
+   Стримеров добавлять через команды чата (права у админов) или через
+   сам гуглодок. 
+   Так же по новым видосам.
 
 ** TODO на определенном канале запускать викторину с вопросами из текстового файла :DBOT:
 
    команда: !victory и !stop
+
+   самый сложный кусок. Пока нет мыслей. 
 
 ** DONE рандомная шутка из башорга или ithappens                       :DBOT:
    CLOSED: [2017-07-24 Пн 11:55]
    :LOGBOOK:
    CLOCK: [2017-07-20 Чт 23:12]--[2017-07-21 Пт 12:53] => 13:41
    :END:
-
+   
+   Сделать красиво, бля.
    команда: !bash; !it
    #+NAME bot-itself
    #+BEGIN_SRC python :tangle bash.py :return shuteika.content :noweb yes
