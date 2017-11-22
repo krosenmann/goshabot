@@ -1064,9 +1064,11 @@
   #+end_example
 
 * 
+  Хуй знает зачем, скорее для практики, но надо заебенить gettext
   Ненавижу дебажить асинхронщину, потому что ее очень тяжко
   дебажить. Вывод -- а почему бы не писать асинхронщину
-  синхронно? :confused:
+  синхронно? :confused: 
+  Тащемта тут один хуй должен быть враппер под асинхронщину.
   #+NAME main-import
   #+BEGIN_SRC python :var DISCORD_AUTH_TOKEN = <token>
     import os
@@ -1077,6 +1079,8 @@
 
     client = discord.Client()
     client.run(DISCORD_AUTH_TOKEN)
+
+
   #+END_SRC
   
   Для использования нужно добавить переменную окружения
@@ -1087,15 +1091,6 @@
     client.run(os.environ.get('DISCORD_AUTH_TOKEN'))
   #+END_SRC
 
-
-  #+NAME comand-pattern
-  #+BEGIN_SRC python :noweb yes tangle yes
-    class Command:
-
-        async def run(self, name):
-            raise "Должна быть переопределена"
-    
-  #+END_SRC
 ** TODO при запуске стрима на твиче\ютубе кидает уведомление на определенный текстовый канал :DBOT:
    name live on *
    game | title
@@ -1120,11 +1115,7 @@
    самый сложный кусок. Пока нет мыслей. 
 
 ** DONE рандомная шутка из башорга или ithappens                       :DBOT:
-   CLOSED: [2017-07-24 Пн 11:55]
-   :LOGBOOK:
-   CLOCK: [2017-07-20 Чт 23:12]--[2017-07-21 Пт 12:53] => 13:41
-   :END:
-   
+
    Сделать красиво, бля.
    команда: !bash; !it
    #+NAME bot-itself
@@ -1133,11 +1124,10 @@
      import re
 
 
-     class Bash:
+     class Bash(str):
          EBASHIM = 'http://bash.im/forweb/?u'
-         DELIM = "<' + '/span><' + 'br>", "<' + 'br><' + 'small>"
 
-         def send_joke(self):
+         def send_joke(self) -> str:
              shuteika = requests.request('GET', self.EBASHIM)
              shuteika = shuteika.content.decode('utf-8')
              shuteika = shuteika.replace("<' + 'br>", "\n")
@@ -1151,10 +1141,7 @@
    #+END_SRC
 
    #+RESULTS:
-   : by Arch.
-   : 
-   : Пишу ПО для киосков самообслуживания. Последние 20 рублей пришлось в приемник купюр сунуть для тестирования.
-   : Ебанутая профессия...
+   : Разослал всем знакомым сообщение: ''Куда ставится ударение в имени Ктулху?'' Тройка лучших ответов: ''На у!'' ''Туда же, куда и в слове хуй!'' ''На моск!''
 
 ** URGENTLY!!! рандомная картинка                                      :DBOT:
    DEADLINE: <2017-08-06 Вс> SCHEDULED: <2017-08-03 Чт>
