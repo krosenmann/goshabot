@@ -1115,14 +1115,22 @@
    самый сложный кусок. Пока нет мыслей. 
 
 ** DONE рандомная шутка из башорга или ithappens                       :DBOT:
+#+NAME: imports   
+#+HEADERS: :python /usr/bin/python3
+#+begin_src python
+  import requests
+  import re
+#+end_src
+
+#+RESULTS: imports
+: None
 
    Сделать красиво, бля.
    команда: !bash; !it
-   #+NAME bot-itself
+   #+NAME bashic
+   #+HEADERS: :python /usr/bin/python3
    #+BEGIN_SRC python :tangle bash.py :return Bash().send_joke() :noweb yes
-     import requests
-     import re
-
+     <<imports>>
 
      class Bash(str):
          EBASHIM = 'http://bash.im/forweb/?u'
@@ -1141,7 +1149,9 @@
    #+END_SRC
 
    #+RESULTS:
-   : Разослал всем знакомым сообщение: ''Куда ставится ударение в имени Ктулху?'' Тройка лучших ответов: ''На у!'' ''Туда же, куда и в слове хуй!'' ''На моск!''
+   : С форума о играх
+   : xxx: Ребят помогите, я тут в дверь не могу войти. Что делать?
+   : yyy: Встань из-за компа и пойди на фитнес.
 
 ** URGENTLY!!! рандомная картинка                                      :DBOT:
    DEADLINE: <2017-08-06 Вс> SCHEDULED: <2017-08-03 Чт>
