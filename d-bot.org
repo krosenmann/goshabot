@@ -1129,7 +1129,7 @@
    команда: !bash; !it
    #+NAME bashic
    #+HEADERS: :python /usr/bin/python3
-   #+BEGIN_SRC python :tangle bash.py :return Bash().send_joke() :noweb yes
+   #+BEGIN_SRC python :tangle bash.py :return Bash().send_joke() :noweb yes :exports results
      <<imports>>
 
      class Bash(str):
