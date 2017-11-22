@@ -12,23 +12,26 @@
   Вместо баз данных проще и прикольнее оказалось использовать гуглодоки, т.к. и
   еще можно редактировать отдельно. Т.е подобавлять новые команды,
   новые данные в адвенчуры и викторины и т.д.
-  #+NAME gspread-test
-  #+BEGIN_SRC python :tangle yes :var table_name="Discord Test" :results output
+  #+NAME gspread
+  #+BEGIN_SRC python :tangle yes :var :results output
     import gspread
     from oauth2client.service_account import ServiceAccountCredentials
-    from pprint import pprint
 
-    scope = ['https://spreadsheets.google.com/feeds']
-    credentials = ServiceAccountCredentials.from_json_keyfile_name(
-        'client_secret.json', scope)
-    client = gspread.authorize(credentials)
 
-    sheet = client.open('Discord Test').sheet1
-    col_test = sheet.col_values(1)
-    row_test = sheet.row_values(1)
-    cell_test = sheet.cell(1, 2).value
+    class Storage:
 
-    pprint([sheet, col_test, row_test, cell_test])
+        def __init__(self, sheetname):
+            self._authorise(self)
+            self.sheet = self.client.open(sheetname).sheet1
+
+        def _authorise(self) -> None:
+            SCOPE = ['https://spreadsheets.google.com/feeds']
+            credentials = ServiceAccountCredentials.from_json_keyfile_name(
+                'client_secret.json', SCOPE)
+            self.client = gspread.authorize(credentials)
+
+        def pack_from_table(self) -> dict:
+            pass
   #+END_SRC
 
   #+RESULTS:
@@ -1064,23 +1067,30 @@
   #+end_example
 
 * 
-  Хуй знает зачем, скорее для практики, но надо заебенить gettext
   Ненавижу дебажить асинхронщину, потому что ее очень тяжко
   дебажить. Вывод -- а почему бы не писать асинхронщину
   синхронно? :confused: 
   Тащемта тут один хуй должен быть враппер под асинхронщину.
   #+NAME main-import
   #+BEGIN_SRC python :var DISCORD_AUTH_TOKEN = <token>
-    import os
     import discord
     import asyncio
-    import requests
-    import re
 
-    client = discord.Client()
-    client.run(DISCORD_AUTH_TOKEN)
+    <<bashic>>
 
+    class Goshabot:
 
+        client = discord.Client()
+
+        @client.event
+        async def on_ready() -> None:
+            pass
+
+        @client.event
+        async def on_message(message) -> None:
+            pass
+
+    Goshabot().client.run(DISCORD_AUTH_TOKEN)
   #+END_SRC
   
   Для использования нужно добавить переменную окружения
@@ -1115,15 +1125,15 @@
    самый сложный кусок. Пока нет мыслей. 
 
 ** DONE рандомная шутка из башорга или ithappens                       :DBOT:
-#+NAME: imports   
-#+HEADERS: :python /usr/bin/python3
-#+begin_src python
-  import requests
-  import re
-#+end_src
+   #+NAME: imports   
+   #+HEADERS: :python /usr/bin/python3
+   #+begin_src python
+     import requests
+     import re
+   #+end_src
 
-#+RESULTS: imports
-: None
+   #+RESULTS: imports
+   : None
 
    Сделать красиво, бля.
    команда: !bash; !it
@@ -1157,7 +1167,12 @@
    DEADLINE: <2017-08-06 Вс> SCHEDULED: <2017-08-03 Чт>
 
    команды стоит создать по названиям сайтов или по тематикам 
-   САЙТЫ: 9gag, рандом гугль пикча хз (откуда вообще лучше и легче будет выдергивать?)
+   САЙТЫ: 9gag, рандом гугль пикча хз (откуда вообще лучше и легче
+   будет выдергивать?)
+   #+NAME 9gag
+   #+BEGIN_SRC python 
+
+   #+END_SRC
 
 ** TODO Приветствовалки и оповещалки о новых петучах на серваке тоже норм. Именно оповещалка. :DBOT:
    Уведомление о смене роли, например, тоже подойдёт.
