@@ -1170,9 +1170,23 @@
    САЙТЫ: 9gag, рандом гугль пикча хз (откуда вообще лучше и легче
    будет выдергивать?)
    #+NAME 9gag
-   #+BEGIN_SRC python 
+   #+HEADERS: :python /usr/bin/python3
+   #+BEGIN_SRC python :return NineGag().get_pivk()
+     # <<imports>>
+     import requests
+     from pprint import pprint
 
+
+     class NineGag:
+
+         def get_pivk(self) -> str:
+             pick = requests.request('GET', 'http://9gag.com/random')
+             # `http://img-9gag-fun.9cache.com/photo/${imgUrl}_700b.png`
+             return pick.url
    #+END_SRC
+
+   #+RESULTS:
+   : https://9gag.com/gag/aWqeO0n
 
 ** TODO Приветствовалки и оповещалки о новых петучах на серваке тоже норм. Именно оповещалка. :DBOT:
    Уведомление о смене роли, например, тоже подойдёт.
