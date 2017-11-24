@@ -9,9 +9,9 @@
 #+tblname: help
 | Команда                | Описание                             |
 |------------------------+--------------------------------------|
-| !bash                  | Рандомная шутка с башорга            |
-| !show_source <command> | Показать исходники файла для команды |
-| !9gag                  | Рандомная пикча с 9gag               |
+| !bash                  | [[Рандомная шутка с башорга]]            |
+| !show_source <command> | [[Показать исходники файла для команды]] |
+| !9gag                  | [[Рандомная пикча с 9gag]]               |
 | !help                  | Показать список команд               |
 |------------------------+--------------------------------------|
   
@@ -86,7 +86,41 @@
 
    самый сложный кусок. Пока нет мыслей. 
 
-** DONE рандомная шутка из башорга или ithappens                       :DBOT:
+* Рандомная пикча с 9gag
+   команды стоит создать по названиям сайтов или по тематикам 
+   САЙТЫ: 9gag, рандом гугль пикча хз (откуда вообще лучше и легче
+   будет выдергивать?)
+   #+NAME: f9gag
+   #+HEADERS: :python /usr/bin/python3
+   #+BEGIN_SRC python :return NineGag().get_pivk() :exports no :results silent :noweb yes :tangle NineGag.py
+     import requests
+     from base import Command
+
+
+     class NineGag(Command):
+         def get_pivk(self) -> str:
+             pick = requests.request('GET', 'http://9gag.com/random')
+             img_name = pick.url.split('/')[-1]
+             img_url = "http://img-9gag-fun.9cache.com/photo/{}_700b.png".format(
+                 img_name)
+             return img_url
+   #+END_SRC
+   
+   #+RESULTS: f9gag
+   : http://img-9gag-fun.9cache.com/photo/apQXw79_700b.png
+
+   #+BEGIN_SRC shell :var IMG_URL=f9gag :file example.png :exports results
+     curl $IMG_URL 
+   #+END_SRC
+
+   #+RESULTS:
+   [[file:example.png]]
+
+** TODO Приветствовалки и оповещалки о новых петучах на серваке тоже норм. Именно оповещалка. :DBOT:
+   Уведомление о смене роли, например, тоже подойдёт.
+   Вот тут хорошо зайдет ттс!
+
+* Рандомная шутка с башорга
    #+NAME: imports   
    #+begin_src python :python /usr/bin/python3
      import requests
@@ -125,49 +159,13 @@
    : xxx: теперь вот я в курсе
    : xxx: и в общем я знаю, что мне делать))))
 
-** DONE рандомная картинка                                             :DBOT:
-   CLOSED: [2017-11-24 Пт 10:59] DEADLINE: <2017-08-06 Вс> SCHEDULED: <2017-08-03 Чт>
-
-   команды стоит создать по названиям сайтов или по тематикам 
-   САЙТЫ: 9gag, рандом гугль пикча хз (откуда вообще лучше и легче
-   будет выдергивать?)
-   #+NAME: f9gag
-   #+HEADERS: :python /usr/bin/python3
-   #+BEGIN_SRC python :return NineGag().get_pivk() :exports no :results silent :noweb yes :tangle NineGag.py
-     import requests
-     from base import Command
-
-
-     class NineGag(Command):
-         def get_pivk(self) -> str:
-             pick = requests.request('GET', 'http://9gag.com/random')
-             img_name = pick.url.split('/')[-1]
-             img_url = "http://img-9gag-fun.9cache.com/photo/{}_700b.png".format(
-                 img_name)
-             return img_url
-   #+END_SRC
-   
-   #+RESULTS: f9gag
-   : http://img-9gag-fun.9cache.com/photo/apQXw79_700b.png
-
-   #+BEGIN_SRC shell :var IMG_URL=f9gag :file example.png :exports results
-     curl $IMG_URL 
-   #+END_SRC
-
-   #+RESULTS:
-   [[file:example.png]]
-
-** TODO Приветствовалки и оповещалки о новых петучах на серваке тоже норм. Именно оповещалка. :DBOT:
-   Уведомление о смене роли, например, тоже подойдёт.
-   Вот тут хорошо зайдет ттс!
-
-** Show Your Source
-   ~!show_source <command>~ - Показывает файл, реализующий команду
-   #+name: show_source_exmpl
-   #+begin_src python :results output :exports results
-     from NineGag import NineGag
-     print(NineGag().show_source())
-   #+end_src
+* Показать исходники файла для команды
+  ~!show_source <command>~ - Показывает файл, реализующий команду
+  #+name: show_source_exmpl
+  #+begin_src python :results output :exports results
+    from NineGag import NineGag
+    print(NineGag().show_source())
+  #+end_src
 *** TODO Показывается базовый, сук. А нужен чайлд, из которого вызывается
    #+RESULTS: show_source_exmpl
    #+begin_example
@@ -218,4 +216,6 @@
   #+END_SRC
 
   #+RESULTS:
+
+
 
