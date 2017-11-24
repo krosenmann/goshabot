@@ -184,13 +184,13 @@
 
 ** Show Your Source
    ~!show_source <command>~ - Показывает файл, реализующий команду
-   #+begin_src python :results output :exports results :noweb yes
+   #+begin_src python :results output :exports results :noweb yes :results code
      from NineGag import NineGag
      print(NineGag().show_source())
    #+end_src
 
    #+RESULTS:
-   #+begin_example
+   #+BEGIN_SRC python
    import requests
    import os
 
@@ -212,6 +212,6 @@
                img_name)
            return img_url
 
-   #+end_example
+   #+END_SRC
 
 * Process
