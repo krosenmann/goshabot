@@ -5,39 +5,7 @@
 #+TAGS: DBOT(b) 
 
 
-* Где хранить?
-  #+NAME dependencys
-  #+BEGIN_EXAMPLE
-  gspread oauth2client
-  #+END_EXAMPLE
-  Вместо баз данных проще и прикольнее оказалось использовать гуглодоки, т.к. и
-  еще можно редактировать отдельно. Т.е подобавлять новые команды,
-  новые данные в адвенчуры и викторины и т.д.
-  #+NAME gspread
-  #+BEGIN_SRC python :tangle yes :var table_name="Discord Test" :results output
-    import gspread
-    from oauth2client.service_account import ServiceAccountCredentials
-
-
-    class Storage:
-
-        def __init__(self, sheetname):
-            self._authorise(self)
-            self.sheet = self.client.open(sheetname).sheet1
-
-        def _authorise(self) -> None:
-            SCOPE = ['https://spreadsheets.google.com/feeds']
-            credentials = ServiceAccountCredentials.from_json_keyfile_name(
-                'client_secret.json', SCOPE)
-            self.client = gspread.authorize(credentials)
-
-        def pack_from_table(self) -> dict:
-            pass
-  #+END_SRC
-
-  #+RESULTS:
-
-* 
+* DicordoBot
 #+tblname: help
 | Команда                | Описание                             |
 |------------------------+--------------------------------------|
@@ -218,4 +186,36 @@
 
    ```
    #+end_example
+
+* Где хранить?
+  #+NAME dependencys
+  #+BEGIN_EXAMPLE
+  gspread oauth2client
+  #+END_EXAMPLE
+  Вместо баз данных проще и прикольнее оказалось использовать гуглодоки, т.к. и
+  еще можно редактировать отдельно. Т.е подобавлять новые команды,
+  новые данные в адвенчуры и викторины и т.д.
+  #+NAME gspread
+  #+BEGIN_SRC python :tangle yes :var table_name="Discord Test" :results output
+    import gspread
+    from oauth2client.service_account import ServiceAccountCredentials
+
+
+    class Storage:
+
+        def __init__(self, sheetname):
+            self._authorise(self)
+            self.sheet = self.client.open(sheetname).sheet1
+
+        def _authorise(self) -> None:
+            SCOPE = ['https://spreadsheets.google.com/feeds']
+            credentials = ServiceAccountCredentials.from_json_keyfile_name(
+                'client_secret.json', SCOPE)
+            self.client = gspread.authorize(credentials)
+
+        def pack_from_table(self) -> dict:
+            pass
+  #+END_SRC
+
+  #+RESULTS:
 
