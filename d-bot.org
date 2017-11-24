@@ -4,6 +4,7 @@
 #+STARTUP: showall
 #+TAGS: DBOT(b) 
 
+
 * Где хранить?
   #+NAME dependencys
   #+BEGIN_EXAMPLE
@@ -37,11 +38,20 @@
   #+RESULTS:
 
 * 
+#+tblname: help
+| Команда                | Описание                             |
+|------------------------+--------------------------------------|
+| !bash                  | Рандомная шутка с башорга            |
+| !show_source <command> | Показать исходники файла для команды |
+| !9gag                  | Рандомная пикча с 9gag               |
+| !help                  | Показать список команд               |
+|------------------------+--------------------------------------|
+  
   Ненавижу дебажить асинхронщину, потому что ее очень тяжко
   дебажить. Вывод -- а почему бы не писать асинхронщину
   синхронно? :confused:
   #+name: basecommand
-  #+begin_src python :tangle basecommand.py :results silent
+  #+begin_src python :tangle base.py :results silent 
     import os
 
 
@@ -52,7 +62,7 @@
         def show_source(self):
             with open(os.path.basename(__file__)) as file:
                 src = file.read()
-            return src
+            return "```python\n{}\n```".format(src)
   #+end_src
   Тащемта тут один хуй должен быть враппер под асинхронщину.
   #+NAME main-import
@@ -157,7 +167,8 @@
    #+HEADERS: :python /usr/bin/python3
    #+BEGIN_SRC python :return NineGag().get_pivk() :exports no :results silent :noweb yes :tangle NineGag.py
      import requests
-     <<basecommand>>
+     from base import Command
+
 
      class NineGag(Command):
          def get_pivk(self) -> str:
@@ -184,14 +195,15 @@
 
 ** Show Your Source
    ~!show_source <command>~ - Показывает файл, реализующий команду
-   #+begin_src python :results output :exports results :noweb yes :results code
+   #+name: show_source_exmpl
+   #+begin_src python :results output :exports results
      from NineGag import NineGag
      print(NineGag().show_source())
    #+end_src
-
-   #+RESULTS:
-   #+BEGIN_SRC python
-   import requests
+*** TODO COMMENT Показывается базовый, сук. А нужен чайлд, из которого вызывается
+   #+RESULTS: show_source_exmpl
+   #+begin_example
+   ```python
    import os
 
 
@@ -202,16 +214,8 @@
        def show_source(self):
            with open(os.path.basename(__file__)) as file:
                src = file.read()
-           return src
+           return "```python\n{}\n```".format(src)
 
-   class NineGag(Command):
-       def get_pivk(self) -> str:
-           pick = requests.request('GET', 'http://9gag.com/random')
-           img_name = pick.url.split('/')[-1]
-           img_url = "http://img-9gag-fun.9cache.com/photo/{}_700b.png".format(
-               img_name)
-           return img_url
+   ```
+   #+end_example
 
-   #+END_SRC
-
-* Process
