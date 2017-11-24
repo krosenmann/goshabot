@@ -108,7 +108,7 @@
    команда: !bash; !it
    #+NAME bashic
    #+HEADERS: :python /usr/bin/python3
-   #+BEGIN_SRC python :tangle bash.py :return Bash().send_joke() :exports results :noweb yes
+   #+BEGIN_SRC python :tangle bash.py :return Bash().send_joke() :exports results :noweb yes 
      <<imports>>
 
 
@@ -129,7 +129,9 @@
    #+END_SRC
 
    #+RESULTS:
-   : Поставил на будильник в мобиле ''Машину смерти'' Арии. Утром заряд сцуко бодрости на весь день, до сих пор руки трясутся: чудо-агрегат ползет на вибро в мою сторону и напевает ''Машина смерти сошла с ума... она летит сметая всех...''
+   : xxx: суть: на проекте, который должен был выйти 1го августа есть таймлайн. который не работает. об этом был в курсе ведущий фронтенд, который уволился, и менеджер проекта, который уволился
+   : xxx: теперь вот я в курсе
+   : xxx: и в общем я знаю, что мне делать))))
 
 ** URGENTLY!!! рандомная картинка                                      :DBOT:
    DEADLINE: <2017-08-06 Вс> SCHEDULED: <2017-08-03 Чт>
@@ -158,7 +160,7 @@
    #+RESULTS: f9gag
    : http://img-9gag-fun.9cache.com/photo/apQXw79_700b.png
 
-   #+BEGIN_SRC shell :var IMG_URL=f9gag :file example.png
+   #+BEGIN_SRC shell :var IMG_URL=f9gag :file example.png :export results
      curl $IMG_URL 
    #+END_SRC
 
