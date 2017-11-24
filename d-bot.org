@@ -160,7 +160,7 @@
    #+RESULTS: f9gag
    : http://img-9gag-fun.9cache.com/photo/apQXw79_700b.png
 
-   #+BEGIN_SRC shell :var IMG_URL=f9gag :file example.png :export results
+   #+BEGIN_SRC shell :var IMG_URL=f9gag :file example.png :exports results
      curl $IMG_URL 
    #+END_SRC
 
