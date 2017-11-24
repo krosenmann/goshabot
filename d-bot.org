@@ -200,7 +200,7 @@
      from NineGag import NineGag
      print(NineGag().show_source())
    #+end_src
-*** TODO COMMENT Показывается базовый, сук. А нужен чайлд, из которого вызывается
+*** TODO Показывается базовый, сук. А нужен чайлд, из которого вызывается
    #+RESULTS: show_source_exmpl
    #+begin_example
    ```python
